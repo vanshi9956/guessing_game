@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Guessing Game</title>
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #1e1e2f, #121212);
+            color: white;
+            text-align: center;
+            font-family: Arial;
+        }
+
+        .container {
+            width: 320px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: #1e1e1e;
+            padding: 15px;
+            margin: 10px;
+            border-radius: 12px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+        }
+
+        input {
+            margin: 5px;
+            padding: 8px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            background: #ff9800;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #e68900;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h1>🎯 Guessing Game</h1>
+    <div class="card">
+        <input type="number" id="guess" placeholder="Guess (0-9)">
+    </div>
+
+    <div class="card">
+        <input type="text" id="name1" placeholder="Player 1 Name">
+        <input type="number" id="p1" placeholder="Guess (0-9)">
+    </div>
+
+    <div class="card">
+        <input type="text" id="name2" placeholder="Player 2 Name">
+        <input type="number" id="p2" placeholder="Guess (0-9)">
+    </div>
+
+    <div class="card">
+        <input type="text" id="name3" placeholder="Player 3 Name">
+        <input type="number" id="p3" placeholder="Guess (0-9)">
+    </div>
+
+    <button onclick="playGame()">Play</button>
+    <button onclick="resetGame()">Play Again</button>
+
+    <h2 id="result"></h2>
+    <h3 id="scoreboard"></h3>
+
+    <!-- Sound -->
+    <audio id="winSound" src="https://www.fesliyanstudios.com/play-mp3/387"></audio>
+</div>
+
+<script>
+let score1 = 0, score2 = 0, score3 = 0;
+
+function playGame() {
+    let g = Number(document.getElementById("guess").value);
+
+    let p1 = Number(document.getElementById("p1").value);
+    let p2 = Number(document.getElementById("p2").value);
+    let p3 = Number(document.getElementById("p3").value);
+
+    let n1 = document.getElementById("name1").value || "Player 1";
+    let n2 = document.getElementById("name2").value || "Player 2";
+    let n3 = document.getElementById("name3").value || "Player 3";
+
+    let result = "";
+
+    if (g === p1) {
+        score1++;
+        if (g === p2 && g === p3) {
+            score2++; score3++;
+            result = "🏆 All players win!";
+        }
+        else if (g === p2) {
+            score2++;
+            result = `🏆 ${n1} & ${n2} win!`;
+        }
+        else if (g === p3) {
+            score3++;
+            result = `🏆 ${n1} & ${n3} win!`;
+        }
+        else {
+            result = `🏆 ${n1} wins!`;
+        }
+    }
+    else if (g === p2) {
+        score2++;
+        if (g === p3) {
+            score3++;
+            result = `🏆 ${n2} & ${n3} win!`;
+        }
+        else {
+            result = `🏆 ${n2} wins!`;
+        }
+    }
+    else if (g === p3) {
+        score3++;
+        result = `🏆 ${n3} wins!`;
+    }
+    else {
+        result = "❌ All players lose!";
+    }
+
+    // Play sound if someone wins
+    if (g === p1 || g === p2 || g === p3) {
+        document.getElementById("winSound").play();
+    }
+
+    document.getElementById("result").innerText =
+        `Guessed number: ${g} → ${result}`;
+
+    document.getElementById("scoreboard").innerText =
+        `${n1}: ${score1} | ${n2}: ${score2} | ${n3}: ${score3}`;
+}
+
+function resetGame() {
+    document.getElementById("p1").value = "";
+    document.getElementById("p2").value = "";
+    document.getElementById("p3").value = "";
+    document.getElementById("result").innerText = "";
+}
+</script>
+
+</body>
+</html>
